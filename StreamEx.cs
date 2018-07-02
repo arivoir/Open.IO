@@ -9,7 +9,7 @@ namespace Open.IO
 {
     public static class StreamEx
     {
-        public static async Task<byte[]> ReadAsBufferAsync(this Stream stream, CancellationToken cancellationToken, IProgress<BytesProgress> progress = null, int chunkSize = 65536)
+        public static async Task<byte[]> ReadAsBufferAsync(this Stream stream, CancellationToken cancellationToken, IProgress<StreamProgress> progress = null, int chunkSize = 65536)
         {
             var length = stream.GetLength();
             byte[] buffer = null;
@@ -35,7 +35,7 @@ namespace Open.IO
                 }
                 offset += readBytes;
                 if (length.HasValue)
-                    progress?.Report(new BytesProgress(offset, length.Value));
+                    progress?.Report(new StreamProgress(offset, length.Value));
             }
             if (length.HasValue)
                 return buffer;
@@ -43,7 +43,7 @@ namespace Open.IO
                 return buffers.SelectMany(b => b).ToArray();
         }
 
-        public static async Task ReadToEndAsync(this Stream stream, CancellationToken cancellationToken, IProgress<BytesProgress> progress = null, int bufferSize = 65536)
+        public static async Task ReadToEndAsync(this Stream stream, CancellationToken cancellationToken, IProgress<StreamProgress> progress = null, int bufferSize = 65536)
         {
             var length = stream.GetLength();
             var buffer = new byte[bufferSize];
@@ -56,11 +56,11 @@ namespace Open.IO
                 readBytes = await stream.ReadAsync(buffer, 0, bytesToRead);
                 offset += readBytes;
                 if (length.HasValue)
-                    progress?.Report(new BytesProgress(offset, length.Value));
+                    progress?.Report(new StreamProgress(offset, length.Value));
             }
         }
 
-        public static async Task CopyToAsync(this Stream stream, Stream destination, int bufferSize = 65536, bool flush = false, IProgress<BytesProgress> progress = null, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task CopyToAsync(this Stream stream, Stream destination, int bufferSize = 65536, bool flush = false, IProgress<StreamProgress> progress = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var length = stream.GetLength();
             var buffer = new byte[bufferSize];
@@ -76,7 +76,7 @@ namespace Open.IO
                     await destination.FlushAsync(cancellationToken);
                 offset += readBytes;
                 if (length.HasValue)
-                    progress?.Report(new BytesProgress(offset, length.Value));
+                    progress?.Report(new StreamProgress(offset, length.Value));
             }
         }
 
@@ -91,9 +91,9 @@ namespace Open.IO
         }
     }
 
-    public class BytesProgress
+    public class StreamProgress
     {
-        public BytesProgress(long bytes, long total)
+        public StreamProgress(long bytes, long total)
         {
             Bytes = bytes;
             TotalBytes = total;
