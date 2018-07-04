@@ -4,6 +4,7 @@
     <TargetFramework>netstandard1.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Authors>Alvaro Rivoir</Authors>
+    <Description>.Net Standard library containing extensions of System.IO</Description>
   </PropertyGroup>
 
 </Project>
