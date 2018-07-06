@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace Open.IO
 {
+    /// <summary>
+    /// Wraps another stream.
+    /// </summary>
     public class StreamWrapper : Stream
     {
         public Stream InnerStream { get; private set; }
@@ -120,6 +123,11 @@ namespace Open.IO
         public override void Write(byte[] buffer, int offset, int count)
         {
             InnerStream.Write(buffer, offset, count);
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            InnerStream.Dispose();
         }
     }
 }
