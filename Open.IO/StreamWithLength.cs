@@ -3,7 +3,7 @@
 namespace Open.IO
 {
     /// <summary>
-    /// This stream takes another stream, one whose lenght it is not available, and a lenght parameter.
+    /// This stream takes another stream, one whose length it is not available, and a length parameter.
     /// </summary>
     /// <remarks>
     /// This stream is useful to wrap network streams whose content is specified as a response header and allow readers to show the progress of the download.
